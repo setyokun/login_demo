@@ -29,7 +29,23 @@ jobs:
         -X POST "https://api-cloud.browserstack.com/app-automate/upload" \
         -F "file=@build/app/outputs/flutter-apk/app-release.apk" > bs_upload_result.json
 
-    - name: Output APP URL
+    - name: Output APP URL from Upload
       run: |
-        echo "APP_URL=$(jq -r .app_url bs_upload_result.json)" >> $GITHUB_ENV
-        echo "✅ APK uploaded to BrowserStack."
+        APP_URL=$(jq -r .app_url bs_upload_result.json)
+        echo "✅ APK uploaded to BrowserStack:"
+        echo "APP_URL=$APP_URL"
+        echo "APP_URL=$APP_URL" >> $GITHUB_ENV
+
+    - name: Get Latest BrowserStack App URL
+      id: get-app-url
+      run: |
+        RESPONSE=$(curl -s -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESS_KEY }}" \
+          https://api-cloud.browserstack.com/app-automate/recent_apps)
+        APP_URL=$(echo "$RESPONSE" | jq -r '.[0].app_url')
+        echo "Latest APK from recent_apps: $APP_URL"
+        echo "app_url=$APP_URL" >> $GITHUB_OUTPUT
+
+    - name: Show latest APP URL
+      run: |
+        echo "🔗 Latest APP URL from BrowserStack recent_apps:"
+        echo "${{ steps.get-app-url.outputs.app_url }}"
