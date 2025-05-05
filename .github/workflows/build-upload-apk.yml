@@ -3,6 +3,7 @@ name: Build & Upload APK to BrowserStack
 on:
   push:
     branches: [master]
+  workflow_dispatch: 
 
 jobs:
   build-apk:
