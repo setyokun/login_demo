@@ -1,6 +1,6 @@
 
 ## 📱 Flutter Login Demo App
-![CI/CD](https://github.com/setyokun/login-demo/actions/workflows/build-upload-apk.yml/badge.svg)
+![CI/CD](https://github.com/setyokun/login_demo/actions/workflows/build-upload-apk.yml/badge.svg)
 
 ### 📝 Deskripsi
 
