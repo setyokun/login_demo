@@ -49,3 +49,11 @@ jobs:
       run: |
         echo "🔗 Latest APP URL from BrowserStack recent_apps:"
         echo "${{ steps.get-app-url.outputs.app_url }}"
+
+    - name: Trigger Automation Repo (Robot Framework)
+      run: |
+        curl -X POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+          https://api.github.com/repos/setyokun/learn-appium-robotframework/dispatches \
+          -d '{"event_type":"run-tests", "client_payload": {"app_url":"${{ steps.get-app-url.outputs.app_url }}"}}'
